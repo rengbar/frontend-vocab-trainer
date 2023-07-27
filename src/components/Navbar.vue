@@ -16,10 +16,12 @@ const searchUser = async () => {
     const response = await fetch(`http://localhost:8080/rest/user/username/${username.value}`, requestOptions);
 
     if (response.ok) {
+      const data = await response.json();
       store.username = username.value;
-      alert('User found');
+      store.userId = data.userId;
+      alert('Welcome back ' + store.username + '\nHave fun playing the game!!');
     } else if (response.status === 404) {
-      createUser();
+      await createUser();
     } else {
       console.log('An error occurred');
     }
@@ -38,8 +40,10 @@ const createUser = async () => {
     const response = await fetch(`http://localhost:8080/rest/user/username/${username.value}`, requestOptions);
 
     if (response.ok) {
+      const data = await response.json();
       store.username = username.value;
-      alert('User created');
+      store.userId = data.userId;
+      alert('Welcome ' + store.username + '\nWe created an account for you.');
     } else {
       alert('User could not be created');
     }
