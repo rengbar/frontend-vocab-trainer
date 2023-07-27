@@ -1,4 +1,52 @@
 <script setup>
+import { ref } from 'vue';
+import { inject } from 'vue';
+
+const store = inject('store');
+
+const username = ref('');
+
+const searchUser = async () => {
+  const requestOptions = {
+    method: 'GET',
+    redirect: 'follow'
+  };
+
+  try {
+    const response = await fetch(`http://localhost:8080/rest/user/username/${username.value}`, requestOptions);
+
+    if (response.ok) {
+      store.username = username.value;
+      alert('User found');
+    } else if (response.status === 404) {
+      createUser();
+    } else {
+      console.log('An error occurred');
+    }
+  } catch (error) {
+    console.log('error', error);
+  }
+};
+
+const createUser = async () => {
+  const requestOptions = {
+    method: 'POST',
+    redirect: 'follow'
+  };
+
+  try {
+    const response = await fetch(`http://localhost:8080/rest/user/username/${username.value}`, requestOptions);
+
+    if (response.ok) {
+      store.username = username.value;
+      alert('User created');
+    } else {
+      alert('User could not be created');
+    }
+  } catch (error) {
+    console.log('error', error);
+  }
+};
 </script>
 
 <template>
@@ -14,8 +62,8 @@
             <router-link to="/about" class="nav-link" aria-current="page">About</router-link>
           </li>
         </ul>
-        <form class="d-flex" role="search">
-          <input class="form-control me-2" type="search" placeholder="insert username" aria-label="Search">
+        <form class="d-flex" role="search" @submit.prevent="searchUser">
+          <input class="form-control me-2" type="search" placeholder="insert username" aria-label="Search" v-model="username">
           <button class="btn btn-outline-success" type="submit">Search</button>
         </form>
       </div>
