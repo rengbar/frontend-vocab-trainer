@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue';
+import CreateGameButton from './CreateGameButton.vue';
 
 const lists = ref([]);
 
@@ -48,7 +49,7 @@ const handleListChoice = () => {
           <div class="card-body">
             <h5 class="card-title">{{ list.vocabularyLanguage }}</h5>
             <p class="card-text">{{ list.translationLanguage }}</p>
-            <a href="#" class="btn btn-primary">{{ list.vocabListId }}</a>
+            <CreateGameButton :vocabListId="list.vocabListId" />
           </div>
         </div>
       </div>
