@@ -1,7 +1,9 @@
 <script setup>
 import { inject, ref } from 'vue';
 import CreateButton from '../components/CreateButton.vue';
+import { useRouter } from 'vue-router';
 
+const router = useRouter();
 const store = inject('store');
 const showCreateOptions = ref(false);
 
@@ -25,7 +27,10 @@ const joinGame = async (gameId, userId) => {
   try {
     const response = await fetch(`http://localhost:8080/rest/game/join/${gameId}?user_id=${userId}`, requestOptions);
     if (response.ok) {
-      console.log('Successfully joined the game',response.json());
+      const data = await response.json();
+      console.log('Successfully joined the game', data);
+      store.gameId = data.gameId;
+      router.push({ name: 'game', params: { gameId: data.gameId } });
     } else {
       console.log('An error occurred');
     }
@@ -33,6 +38,8 @@ const joinGame = async (gameId, userId) => {
     console.log('error', error);
   }
 };
+
+
 </script>
 
 <template>

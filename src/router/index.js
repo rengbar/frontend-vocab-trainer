@@ -18,10 +18,11 @@ const router = createRouter({
       component: AboutView
     },
     {
-      path: '/game',
+      path: '/game/:gameId',
       name: 'game',
       component: GameView
     }
+
   ]
 })
 

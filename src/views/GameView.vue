@@ -39,6 +39,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useStore } from '../store.js';
+import { useRoute } from 'vue-router';
 
 const store = useStore();
 const gameData = ref(null);
@@ -56,6 +57,7 @@ const answerSelected = ref(false);
 const showModal = ref(false);
 const player_1_username = ref('');
 const player_2_username = ref('');
+const route = useRoute();
 
 
 
@@ -181,7 +183,7 @@ const loadRound = () => {
 };
 
 const fetchGameData = async () => {
-  const gameId = store.gameId;
+  const gameId = route.params.gameId;
 
   const response = await fetch(`http://localhost:8080/rest/game/start/${gameId}`);
   if (response.ok) {
