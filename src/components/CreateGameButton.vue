@@ -1,7 +1,11 @@
+// CreateGameButton.vue
 <script setup>
 import { inject } from 'vue';
+import { defineProps } from 'vue';
+import { useRouter } from 'vue-router';
 
 const store = inject('store');
+const router = useRouter();
 
 const props = defineProps({
   vocabListId: Number
@@ -16,8 +20,10 @@ const createGame = async () => {
   try {
     const response = await fetch(`http://localhost:8080/rest/game/create/${props.vocabListId}?user_id=${store.userId}`, requestOptions);
     if (response.ok) {
-      console.log('Game created successfully');
-      console.log(response.json());
+      const data = await response.json();
+      store.gameId = data.gameId;
+      console.log('Game created successfully', data);
+      router.push({ name: 'game' });
     } else {
       console.log('An error occurred');
     }
