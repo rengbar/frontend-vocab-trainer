@@ -10,9 +10,29 @@
     <div class="feedback" v-if="feedback">{{ feedback }}</div>
   </div>
   <div v-else>
-    <h1>Test</h1>
-    <p>Player 1 - Correct answers: {{ player_1_correct }}, Incorrect answers: {{ player_1_incorrect }}</p>
-    <p>Player 2 - Correct answers: {{ player_2_correct }}, Incorrect answers: {{ player_2_incorrect }}</p>
+    <div class="card card-custom" v-bind:class="{ 'bg-success text-white': player_1_correct > player_2_correct, 'bg-danger text-white': player_1_correct < player_2_correct, 'bg-warning': player_1_correct === player_2_correct }">
+      <div class="card-body">
+        <h5 class="card-title">{{ player_1_username }}:</h5>
+        <p class="card-text">Correct answers: {{ player_1_correct }}</p>
+        <p class="card-text">Incorrect answers: {{ player_1_incorrect }}</p>
+      </div>
+    </div>
+    <div class="card card-custom mt-3" v-bind:class="{ 'bg-success text-white': player_2_correct > player_1_correct, 'bg-danger text-white': player_2_correct < player_1_correct, 'bg-warning': player_1_correct === player_2_correct }">
+      <div class="card-body">
+        <h5 class="card-title">{{ player_2_username }}:</h5>
+        <p class="card-text">Correct answers: {{ player_2_correct }}</p>
+        <p class="card-text">Incorrect answers: {{ player_2_incorrect }}</p>
+      </div>
+    </div>
+    <div class="d-flex justify-content-center mt-4">
+      <router-link to="/" class="btn btn-success">Start a new Game or join</router-link>
+    </div>
+  </div>
+  <div v-if="showModal" class="modal d-flex align-items-center justify-content-center">
+    <div class="modal-content alert alert-primary">
+      <span class="close-button" @click="showModal = false">&times;</span>
+      <p>The other player is not finished yet.</p>
+    </div>
   </div>
 </template>
 
@@ -33,6 +53,10 @@ const player_1_incorrect = ref(0);
 const player_2_correct = ref(0);
 const player_2_incorrect = ref(0);
 const answerSelected = ref(false);
+const showModal = ref(false);
+const player_1_username = ref('');
+const player_2_username = ref('');
+
 
 
 const shuffleArray = (array) => {
@@ -93,14 +117,19 @@ const endGame = async () => {
     redirect: 'follow'
   };
 
+  showModal.value = true;
+
   while (true) {
     await new Promise(resolve => setTimeout(resolve, 1500));
     const response = await fetch(`http://localhost:8080/rest/game/end/${store.gameId}?user_id=${store.userId}`, requestOptions);
     if (response.ok) {
+      showModal.value = false;
       const result = await response.json();
       console.log(result);
 
       // Reset the counters
+      player_1_username.value = result.player_1.username;
+      player_2_username.value = result.player_2.username;
       player_1_correct.value = 0;
       player_1_incorrect.value = 0;
       player_2_correct.value = 0;
@@ -128,6 +157,7 @@ const endGame = async () => {
     }
   }
 };
+
 
 const loadRound = () => {
   if (currentRound.value >= gameData.value.length) {
@@ -185,4 +215,44 @@ onMounted(fetchGameData);
   text-align: center;
   margin-top: 20px;
 }
+
+.modal {
+  display: block;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+.close-button {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close-button:hover,
+.close-button:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+.card-custom {
+  width: 300px;
+  margin: auto;
+  margin-top: 60px;
+}
+
 </style>

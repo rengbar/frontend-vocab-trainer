@@ -8,6 +8,31 @@ const showCreateOptions = ref(false);
 const handleCreateClick = () => {
   showCreateOptions.value = true;
 };
+
+const handleJoinClick = async () => {
+  const gameId = window.prompt("Please enter the game ID:");
+  if (gameId) {
+    await joinGame(gameId, store.userId);
+  }
+};
+
+const joinGame = async (gameId, userId) => {
+  const requestOptions = {
+    method: 'PATCH',
+    redirect: 'follow'
+  };
+
+  try {
+    const response = await fetch(`http://localhost:8080/rest/game/join/${gameId}?user_id=${userId}`, requestOptions);
+    if (response.ok) {
+      console.log('Successfully joined the game',response.json());
+    } else {
+      console.log('An error occurred');
+    }
+  } catch (error) {
+    console.log('error', error);
+  }
+};
 </script>
 
 <template>
@@ -16,7 +41,7 @@ const handleCreateClick = () => {
     <h1 class="mb-4">{{ store.userId }}</h1>
     <div class="d-flex gap-3">
       <button type="button" class="btn btn-primary" @click="handleCreateClick">Create</button>
-      <button type="button" class="btn btn-success">Join</button>
+      <button type="button" class="btn btn-success" @click="handleJoinClick">Join</button>
     </div>
     <CreateButton v-if="showCreateOptions" />
   </main>
