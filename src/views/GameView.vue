@@ -11,6 +11,8 @@
   </div>
   <div v-else>
     <h1>Test</h1>
+    <p>Player 1 - Correct answers: {{ player_1_correct }}, Incorrect answers: {{ player_1_incorrect }}</p>
+    <p>Player 2 - Correct answers: {{ player_2_correct }}, Incorrect answers: {{ player_2_incorrect }}</p>
   </div>
 </template>
 
@@ -26,6 +28,12 @@ const answers = ref([]);
 const feedback = ref("");
 const currentRound = ref(0);
 const gameEnded = ref(false);
+const player_1_correct = ref(0);
+const player_1_incorrect = ref(0);
+const player_2_correct = ref(0);
+const player_2_incorrect = ref(0);
+const answerSelected = ref(false);
+
 
 const shuffleArray = (array) => {
   for (let i = array.length - 1; i > 0; i--) {
@@ -35,6 +43,14 @@ const shuffleArray = (array) => {
 };
 
 const checkAnswer = async (index) => {
+  // If an answer has already been selected, return early
+  if (answerSelected.value) {
+    return;
+  }
+
+  // Set answerSelected to true
+  answerSelected.value = true;
+
   answers.value[index].clicked = true;
   if (answers.value[index].correct) {
     feedback.value = "The answer was correct!";
@@ -66,6 +82,8 @@ const checkAnswer = async (index) => {
     } else {
       loadRound();
     }
+    // Reset answerSelected to false for the next round
+    answerSelected.value = false;
   }, 1500);
 };
 
@@ -81,14 +99,35 @@ const endGame = async () => {
     if (response.ok) {
       const result = await response.json();
       console.log(result);
+
+      // Reset the counters
+      player_1_correct.value = 0;
+      player_1_incorrect.value = 0;
+      player_2_correct.value = 0;
+      player_2_incorrect.value = 0;
+
+      // Iterate through each gameRound
+      for (let gameRound of result.gameRounds) {
+        // Check the correct answer for each player and increment the counters
+        if (gameRound.player_1_correct) {
+          player_1_correct.value++;
+        } else {
+          player_1_incorrect.value++;
+        }
+
+        if (gameRound.player_2_correct) {
+          player_2_correct.value++;
+        } else {
+          player_2_incorrect.value++;
+        }
+      }
+
       break;
     } else {
       console.log('An error occurred, retrying...');
     }
   }
 };
-
-
 
 const loadRound = () => {
   if (currentRound.value >= gameData.value.length) {
