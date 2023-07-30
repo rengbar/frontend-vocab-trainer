@@ -5,6 +5,13 @@ import CreateGameButton from './CreateGameButton.vue';
 const lists = ref([]);
 const categoryLists = ref([]);
 
+let category = ref('');
+let showModal = ref(false);
+
+const openModal = () => {
+  showModal.value = true;
+};
+
 const fetchLists = async () => {
   const requestOptions = {
     method: 'GET',
@@ -58,6 +65,7 @@ const handleListChoice = () => {
 
 const handleCategoryChoice = () => {
   fetchListsByCategory();
+  showModal.value = false;
 };
 </script>
 
@@ -95,6 +103,23 @@ const handleCategoryChoice = () => {
         </div>
       </div>
     </div>
+    <div class="modal" tabindex="-1" :class="{ 'show': showModal }">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Choose Category</h5>
+            <button type="button" class="btn-close" @click="showModal = false"></button>
+          </div>
+          <div class="modal-body">
+            <input type="text" class="form-control" v-model="category" placeholder="Enter category name">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" @click="showModal = false">Close</button>
+            <button type="button" class="btn btn-primary" @click="handleCategoryChoice">Submit</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -117,6 +142,15 @@ const handleCategoryChoice = () => {
  .my-3 {
    margin-top: 3rem !important;
  }
+
+.card {
+  width: 18rem;
+}
+
+.btn {
+  background-color: #3F72AF;
+  border: none;
+}
 
 </style>
 
