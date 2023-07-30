@@ -1,16 +1,16 @@
-import './assets/main.css'
-
-import { createApp} from 'vue'
-import App from './App.vue'
-import router from './router'
-import 'bootstrap/dist/css/bootstrap.min.css'
-import'bootstrap/dist/js/bootstrap.min.js'
+import { createApp } from 'vue';
+import App from './App.vue';
+import router from './router';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.min.js';
 import { store } from './store.js';
+import Bootstrap from 'bootstrap/dist/js/bootstrap.min.js';
+import './assets/main.css'; // Import your CSS after bootstrap
 
+window.bootstrap = Bootstrap;
 
-const app = createApp(App)
+const app = createApp(App);
 
-app.use(router)
+app.use(router);
 
-app.mount('#app')
-
+app.mount('#app');

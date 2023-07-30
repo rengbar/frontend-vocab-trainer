@@ -43,19 +43,50 @@ const joinGame = async (gameId, userId) => {
 </script>
 
 <template>
-  <main v-if="store.username" class="d-flex flex-column justify-content-start align-items-center text-center" style="height: 100vh; padding-top: 2rem;">
-    <h1 class="mb-4">{{ store.username }}</h1>
-    <h1 class="mb-4">{{ store.userId }}</h1>
-    <div class="d-flex gap-3">
-      <button type="button" class="btn btn-primary" @click="handleCreateClick">Create</button>
-      <button type="button" class="btn btn-success" @click="handleJoinClick">Join</button>
+  <main v-if="store.username" class="d-flex flex-column justify-content-start align-items-center text-center" style="height: 100vh; padding-top: 4rem;">
+    <div class="username-display text-start w-100 px-5 mb-4">
+      <h1>Username: {{ store.username }}</h1>
+    </div>
+    <div class="d-flex gap-3 w-100 justify-content-center">
+      <button type="button" class="btn btn-primary btn-lg btn-large-text" @click="handleCreateClick">Create</button>
+      <button type="button" class="btn btn-success btn-lg btn-large-text" @click="handleJoinClick">Join</button>
     </div>
     <CreateButton v-if="showCreateOptions" />
   </main>
 </template>
 
 
+
 <style scoped>
+.username-display h1 {
+  font-size: 1.5rem;
+  margin-top: 0.0rem; /* kleinerer oberer Rand */
+}
+
+.btn-primary, .btn-success {
+  background-color: #112D4E !important;
+  border-color: #112D4E !important;
+  color: #ffffff !important;
+  width: 150px;
+  text-align: center;
+}
+
+.btn-primary:hover, .btn-success:hover {
+  background-color: #0a1d33 !important;
+  border-color: #0a1d33 !important;
+}
+
+.btn-success {
+  background-color: #DBE2EF !important;
+  border-color: #DBE2EF !important;
+  color: #000000 !important;
+}
+
+.btn-success:hover {
+  background-color: #c0cfd9 !important;
+  border-color: #c0cfd9 !important;
+}
+
 .main {
   height: 100vh;
   display: flex;
@@ -63,5 +94,9 @@ const joinGame = async (gameId, userId) => {
   align-items: center;
   flex-direction: column;
   gap: 1rem;
+}
+
+.btn-large-text {
+  font-size: 1.75rem;
 }
 </style>

@@ -99,5 +99,24 @@ const handleCategoryChoice = () => {
 </template>
 
 <style scoped>
+.btn-primary, .btn-secondary {
+  background-color: #3F72AF !important;
+  border-color: #3F72AF !important;
+  color: #ffffff !important;
+}
+
+.btn-primary:hover, .btn-secondary:hover {
+  background-color: #264a73 !important;
+  border-color: #264a73 !important;
+}
+ .card {
+   min-width: 18rem;
+   max-width: 18rem;
+ }
+
+ .my-3 {
+   margin-top: 3rem !important;
+ }
 
 </style>
+
