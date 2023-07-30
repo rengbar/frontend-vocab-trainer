@@ -42,10 +42,10 @@ body {
 .btn-secondary {
     background-color: #112D4E !important;
     border-color: #112D4E !important;
-    color: #ffffff !important;  /* Weißer Text */
+    color: #ffffff !important;
 }
 
 .btn-secondary:hover {
-    background-color: #0a1d33 !important;  /* Dunklerer Ton beim Überfahren mit der Maus */
+    background-color: #0a1d33 !important;
     border-color: #0a1d33 !important;
 }

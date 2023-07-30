@@ -60,7 +60,7 @@ const joinGame = async (gameId, userId) => {
 <style scoped>
 .username-display h1 {
   font-size: 1.5rem;
-  margin-top: 0.0rem; /* kleinerer oberer Rand */
+  margin-top: 0.0rem;
 }
 
 .btn-primary, .btn-success {

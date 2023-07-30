@@ -23,7 +23,7 @@ const createGame = async () => {
       const data = await response.json();
       store.gameId = data.gameId;
       console.log('Game created successfully', data);
-      router.push({ name: 'game', params: { gameId: data.gameId } }); // gameId hinzufügen
+      router.push({ name: 'game', params: { gameId: data.gameId } });
     } else {
       console.log('An error occurred');
     }
